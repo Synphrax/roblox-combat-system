@@ -1,0 +1,21 @@
+{
+  "className": "Part",
+  "properties": {
+    "Anchored": true,
+    "CanCollide": false,
+    "CanQuery": true,
+    "CanTouch": false,
+    "Size": [4, 4, 4],
+    "Transparency": 1
+  },
+  "children": [
+    {
+      "name": "Owner",
+      "className": "StringValue"
+    },
+    {
+      "name": "AttackName",
+      "className": "StringValue"
+    }
+  ]
+}

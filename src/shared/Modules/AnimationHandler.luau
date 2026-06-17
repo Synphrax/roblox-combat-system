@@ -1,14 +1,16 @@
 local module = {}
 
 local Debris = game:GetService("Debris")
-local EncodingService = game:GetService("EncodingService")
-local Players = game:getService("Players")
+local Players = game:GetService("Players")
 
 module.Anims = {}
 
 local function getAnimator(character)
     local humanoid = character:FindFirstChildOfClass("Humanoid")
-    if not humanoid then return nil end
+    if not humanoid then
+        warn(`No Humanoid found for animation on "{character.Name}"`)
+        return nil
+    end
 
     local animator = humanoid:FindFirstChildOfClass("Animator")
     if not animator then
@@ -19,17 +21,28 @@ local function getAnimator(character)
     return animator
 end
 
-function module.LoadAnim(character, _type, animId, keyframeCallback, isLooped)
+function module.LoadAnim(character, _type, animId, keyframeCallback, isLooped, priority)
     if not character or not _type or not animId then return end
 
     local animator = getAnimator(character)
     if not animator then return end
 
-    local animation = Instance.new("Animation")
-    animation.AnimationId = animId
-    local track = animator:LoadAnimation(animation)
+	local animation = Instance.new("Animation")
+	animation.AnimationId = animId
+	local success, track = pcall(function()
+		return animator:LoadAnimation(animation)
+	end)
 
-    module.Anims[character] = module.Anims[character] or {}
+	if not success then
+		warn(`Failed to load animation "{animId}": {track}`)
+		animation:Destroy()
+		return
+	end
+
+	track.Priority = priority or Enum.AnimationPriority.Action
+	track.Looped = isLooped == true
+
+	module.Anims[character] = module.Anims[character] or {}
     module.Anims[character][_type] = module.Anims[character][_type] or {}
 
     local connections = {}
@@ -49,7 +62,8 @@ function module.LoadAnim(character, _type, animId, keyframeCallback, isLooped)
         Connections = connections
     }
 
-    track:Play()
+	track:Play()
+	animation:Destroy()
 
     if not isLooped then
         Debris:AddItem(track, track.Length + 1)
@@ -137,7 +151,7 @@ function module.PreloadAnimations(character, animList)
 
     for _, animId in ipairs(animList) do
         if not preloaded[animId] then
-            local animation = Instance.new("Animator", character)
+            local animation = Instance.new("Animation")
             animation.AnimationId = animId
 
             game:GetService("ContentProvider"):PreloadAsync({ animation })

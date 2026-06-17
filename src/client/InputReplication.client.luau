@@ -1,13 +1,11 @@
 local CAS = game:GetService("ContextActionService")
-local EncodingService = game:GetService("EncodingService")
-local PlaceAssetIdsService = game:GetService("PlaceAssetIdsService")
 local RS = game:GetService("ReplicatedStorage")
 
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
 local ReplicateRemote = RS.Remotes:WaitForChild("Replicate")
-local ReplicationFolder = RS:WaitForChild("LocalHandler")
+local ReplicationFolder = RS.Shared:WaitForChild("LocalHandler")
 
 local loadedClientModules = {}
 
@@ -18,12 +16,12 @@ local typeToStringValue = {
 
 local function getClientModule(actionType, functionName)
     local typeConversion = typeToStringValue[actionType]
-    local equipped = player:FindFirstChild(typeConversion)
+    local equipped = player:WaitForChild(typeConversion)
     
     local folderName = equipped.Value
-    local typeFolder = ReplicationFolder:FindFirstChild(actionType)
-    local actionFolder = typeFolder:FindFirstChild(folderName)
-    local moduleScript = actionFolder:FindFirstChild(functionName)
+    local typeFolder = ReplicationFolder:WaitForChild(actionType)
+    local actionFolder = typeFolder:WaitForChild(folderName)
+    local moduleScript = actionFolder:WaitForChild(functionName)
 
     loadedClientModules[actionType] = loadedClientModules[actionType] or {}
     loadedClientModules[actionType][folderName] = loadedClientModules[actionType][folderName] or {}

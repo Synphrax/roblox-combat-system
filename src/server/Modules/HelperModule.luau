@@ -4,7 +4,7 @@ local Players = game:GetService("Players")
 local RS = game:GetService("RunService")
 local RP = game:GetService("ReplicatedStorage")
 
-local StateHandler = require(RP.Modules.StateHandler)
+local StateHandler = require(RP.Shared.Modules.StateHandler)
 
 local originalSpeeds = {}
 

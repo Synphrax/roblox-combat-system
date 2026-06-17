@@ -1,5 +1,3 @@
-local ChangeHistoryStreamingService = game:GetService("ChangeHistoryStreamingService")
-local EncodingService = game:GetService("EncodingService")
 local module = {}
 
 local states = {}
@@ -47,7 +45,7 @@ end
 function module.SetStun(character, value, duration, stunSpeed)
     if not character or not character:FindFirstChild("Humanoid") then return end
 
-    local humanoid = character.humanoid
+    local humanoid = character.Humanoid
 
     if not states[character] then
         states[character] = {}
