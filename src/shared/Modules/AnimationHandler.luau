@@ -29,6 +29,7 @@ function module.LoadAnim(character, _type, animId, keyframeCallback, isLooped, p
 
 	local animation = Instance.new("Animation")
 	animation.AnimationId = animId
+    
 	local success, track = pcall(function()
 		return animator:LoadAnimation(animation)
 	end)
