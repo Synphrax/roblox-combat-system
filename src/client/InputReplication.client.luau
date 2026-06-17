@@ -32,7 +32,7 @@ local function getClientModule(actionType, functionName)
     return loadedClientModules[actionType][folderName][functionName]
 end
 
-local function callClientFunction(actionType, moduleName, functionName, ...)
+local function callClientFunction(actionType, moduleName, functionName, ...) -- Can send through extra data with the ...
     local clientModule = getClientModule(actionType, moduleName)
 
     if clientModule and typeof(clientModule[functionName]) == "function" then
