@@ -27,7 +27,7 @@ local function getClientModule(actionType, functionName)
 
     loadedClientModules[actionType] = loadedClientModules[actionType] or {}
     loadedClientModules[actionType][folderName] = loadedClientModules[actionType][folderName] or {}
-    loadedClientModules[actionType][folderName][functionName] = loadedClientModules[actionType][folderName][functionName] or {}
+    loadedClientModules[actionType][folderName][functionName] = loadedClientModules[actionType][folderName][functionName] or require(moduleScript)
 
     return loadedClientModules[actionType][folderName][functionName]
 end
